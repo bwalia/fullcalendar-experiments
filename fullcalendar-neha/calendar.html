@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
- <title>Root CRM</title>
+ <title>Synergist Experiment</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -62,7 +62,7 @@
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><img src="images/small-logo.png"  STYLE="padding-left:5px; width:32px;"></span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><IMG SRC="images/root-crm-logo.png" STYLE="width:160px;" ALT=""/></span>
+      <span class="logo-lg"><IMG SRC="images/synergist-logo.png" STYLE="width:160px;" ALT=""/></span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -440,9 +440,9 @@
             <div class="box-body">
               <!-- the events -->
               <div id="external-events">
-              		<div class="external-event bg-yellow">Jobshout Admin	</div>
-                <div class="external-event bg-aqua">Roor Crm Changes</div>
-                <div class="external-event bg-light-blue">Root Crm Backend Design	</div>
+              		<div class="external-event bg-yellow">Jobshout Admin Jobshout AdminJobshout AdminJobshout AdminJobshout AdminJobshout AdminJobshout AdminJobshout Admin Jobshout Admin AdminJobshout AdminJobshout Admin Jobshout AdminAdminJobshout AdminJobshout Admin Jobshout AdminAdminJobshout AdminJobshout Admin Jobshout AdminAdminJobshout AdminJobshout Admin Jobshout AdminAdminJobshout AdminJobshout Admin Jobshout AdminAdminJobshout AdminJobshout Admin Jobshout AdminAdminJobshout AdminJobshout Admin Jobshout AdminAdminJobshout AdminJobshout Admin Jobshout AdminAdminJobshout AdminJobshout Admin Jobshout AdminAdminJobshout AdminJobshout Admin Jobshout Admin	</div>
+                <div class="external-event bg-aqua">Synergist Experiment Changes</div>
+                <div class="external-event bg-light-blue">Synergist Experiment Backend Design	</div>
                 <div class="checkbox">
                 		<label for="drop-remove">
                     <input type="checkbox" id="drop-remove">
@@ -520,7 +520,7 @@
 } (check above at line number: 41)</li>
       			<li><strong>Week selection Dropdown : </strong> Drawn dropdown (check at line number : 966 below), and used "refreshCalendarDependingUponWeeks()" function to display defined "views" (line number: 808) of fullCalendar.</li>
       			<li><strong>Horizontal Slider : </strong> Drawn slider at line number : 948 below, initialized at line number: 953 and used "ResourceWidthSet()" function to increase width.<br> CSS Used: from line number: 44 to 53 on the same page</li>
-      			
+      			<li><strong>Change Column Format : </strong> columnFormat at line number: 801 below, where ddd means first 3 letters of day (Mon, Tue...), DD means date, dddd means full name of day, M month as number</li>
       		</ul>
       	</div>
       </div>
@@ -532,7 +532,7 @@
 
   <footer class="main-footer">
     
-    <strong>Copyright &copy; 2016-2017 <a href="#">Root CRM</a>.</strong> All rights
+    <strong>Copyright &copy; 2016-2017 <a href="#">Synergist Experiment</a>.</strong> All rights
     reserved.
   </footer>
 
@@ -798,7 +798,14 @@
     	minTime: "10:00:00", // start working hours 10 AM
   		maxTime: "17:00:00", // end working hours 5 PM
   		slotDuration: '1:0:0', // slot duration to set
-  		
+<<<<<<< HEAD
+  		//contentHeight: 500, // slot duration to set
+weekends: false,
+		displayEventTime: false,
+
+=======
+  		columnFormat: { month: 'ddd', week: 'ddd DD', day: 'dddd' }, //where ddd means first 3 letters of day (Mon, Tue...), DD means date, dddd means full name of day, M month as number
+>>>>>>> origin/master
       	header: {
         	left: 'prev,next today',
         	center: 'title',
@@ -987,6 +994,7 @@
 			$(".fc td, .fc th").attr("style", "");
 		}
 		$("#calendar").fullCalendar('rerenderEvents');
+		$("#calendar").fullCalendar('refresh');
 		$(window).trigger('resize');
 	}
 	
