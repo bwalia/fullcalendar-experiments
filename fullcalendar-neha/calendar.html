@@ -24,19 +24,34 @@
   <!-- fullCalendar 2.2.5-->
   
   <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">  
-  <style>
-  .fc-event.fc-draggable, .fc-event[href] {
+<style>
+.fc-event.fc-draggable, .fc-event[href] {
     cursor: pointer;
     border: 1px solid #767272 !important;
     padding: 4px;
-    margin: 2px;
+    margin: 1px;
+    width: 88%;
+
 }
 .fc .fc-toolbar > * > *  {
     float:none !important;
     margin-left: .75em;
     top: -10px;
 }
-  </style>
+.fc td.fc-sun, .fc td.fc-sat {
+    background-color: #f7f7f7 !important;
+}
+.fc-view, .fc-view > table {
+    position: relative;
+    z-index: 1;
+    overflow: scroll;
+}
+.fc-ltr .fc-basic-view .fc-day-number {
+    text-align: right;
+    position: relative;
+    margin-right: 20px;
+}
+</style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -490,9 +505,21 @@
       	<div style="padding:20px;">
       		<h3>Notes</h3>
       		<ul>
-      			<li><strong>Each week begins : </strong> firstDay (check the code at line number : 768 below) <br>The value must be a number that represents the day of the week.<br>Sunday=0, Monday=1, Tuesday=2, etc.</li>
-      			<li><strong>Start time of a day : </strong> minTime (check at line number : 769 below) <br>The default "00:00:00" means the start time will be at the very beginning of the day (midnight).</li>
-      			<li><strong>End time : </strong> maxTime (check at line number : 770 below) <br>The default "24:00:00" means the end time will be at the very end of the day (midnight).</li>
+      			<li><strong>Each week begins : </strong> firstDay (check the code at line number : 795 below) <br>The value must be a number that represents the day of the week.<br>Sunday=0, Monday=1, Tuesday=2, etc.</li>
+      			<li><strong>Start time of a day : </strong> minTime (check at line number : 796 below) <br>The default "00:00:00" means the start time will be at the very beginning of the day (midnight).</li>
+      			<li><strong>End time : </strong> maxTime (check at line number : 797 below) <br>The default "24:00:00" means the end time will be at the very end of the day (midnight).</li>
+      			<li><strong>Slot Duration : </strong> slotDuration (check at line number : 798 below) <br>The frequency for displaying time slots. <br> default: '00:30:00' (30 minutes).</li>
+      			<li><strong>To add border on drawn events : </strong> added style .fc-event.fc-draggable, .fc-event[href] {
+    cursor: pointer;
+    border: 1px solid #767272 !important;
+    padding: 4px;
+    margin: 2px;
+} (check above on same html page at line number: 28)</li>
+				<li><strong>Change color of Saturday and Sunday : </strong> added style .fc td.fc-sun, .fc td.fc-sat {
+    background-color: #f7f7f7 !important;
+} (check above at line number: 41)</li>
+      			<li><strong>Week selection Dropdown : </strong> Drawn dropdown (check at line number : 961 below), and used "refreshCalendarDependingUponWeeks()" function to display defined "views" (line number: 806) of fullCalendar.</li>
+      			
       		</ul>
       	</div>
       </div>
@@ -721,7 +748,7 @@
       
     });
   </script>
-  <script src="js/basictable.js"></script>
+<script src="js/basictable.js"></script>
 <script src="js/app.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
@@ -798,13 +825,10 @@
     		if(view.name=="agendaWeek" || view.name=="agendaToDisplayOneWeek"  || view.name=="agendaToDisplayTwoWeek" || view.name=="agendaToDisplayThreeWeek" || view.name=="agendaToDisplayFourWeek"){
     			if(view.name=="agendaWeek"){
     				$('#no_of_weeks').val( 1 );
-    				weeksRangeSlider.slider( "value", 1 );
     			}
     			$('#no_of_weeks').show();
-    			$('#weeks-range-slider').show();
     	 	}else{
     	 		$('#no_of_weeks').hide();
-    			$('#weeks-range-slider').hide();
     	 	}
     	},
       //Random default events
@@ -917,30 +941,44 @@
     
     //init slider
    
-    $('<div id="weeks-range-slider" style="display:none;position: relative;top: -30px;left: 150px;"></div>').appendTo('#calendar .fc-left')
+    $('<div id="weeks-range-slider" style="	position: relative;top: -30px;left: 150px;"></div>').appendTo('#calendar .fc-left')
       .on('change', function() {
       	refreshCalendarDependingUponWeeks($(this).val());
       }).before('<span class="fc-header-space">');
     
-     var weeksRangeSlider=$( "#weeks-range-slider" ).slider({
+      var resourceWidth=1;
+      $( "#weeks-range-slider" ).slider({
       	range: "max",
       	min: 1,
       	max: 4,
-      	value: 1,
+      	value: resourceWidth,
       	slide: function( event, ui ) {
-       		$('#no_of_weeks').val( ui.value );
-       		refreshCalendarDependingUponWeeks( ui.value );
+       		resourceWidth=ui.value;
+       		ResourceWidthSet();
      	}
     });
     
-    // Refresh link
+    // Draw Week Selection dropdown on Calendar
     	$('<select id="no_of_weeks" name="no_of_weeks" style="display:none; height:34px;top: -10px;position: relative;"><option value="1">1 week</option><option value="2">2 weeks</option><option value="3">3 weeks</option><option value="4">4 weeks</option></select>').appendTo('#calendar .fc-right')
       .on('change', function() {
-      	weeksRangeSlider.slider( "value", this.selectedIndex + 1 );
       	refreshCalendarDependingUponWeeks($(this).val());
       }).before('<span class="fc-header-space">');
       
-      
+	function ResourceWidthSet(){
+		$(".fc td, .fc th").attr("style", "");
+
+		if(resourceWidth == 1){
+			$(".fc td, .fc th").attr("style", "");
+		}else if(resourceWidth == 2){
+			$(".fc td, .fc th").attr("style", "width: 200px;padding-left: 4px;padding-right: 4px;");
+		}else if(resourceWidth == 3){
+			$(".fc td, .fc th").attr("style", "width: 250px;padding-left: 4px;padding-right: 4px;");
+		}else{
+			$(".fc td, .fc th").attr("style", "width: 300px;padding-left: 4px;padding-right: 4px;");
+		}	
+		$("#fullCalendar").fullCalendar('rerenderEvents');
+		$(window).trigger('resize');
+	}
 		function refreshCalendarDependingUponWeeks(week){
 			var weekVal=parseInt(week);
 			switch (weekVal) {
