@@ -505,10 +505,10 @@
       	<div style="padding:20px;">
       		<h3>Notes</h3>
       		<ul>
-      			<li><strong>Each week begins : </strong> firstDay (check the code at line number : 795 below) <br>The value must be a number that represents the day of the week.<br>Sunday=0, Monday=1, Tuesday=2, etc.</li>
-      			<li><strong>Start time of a day : </strong> minTime (check at line number : 796 below) <br>The default "00:00:00" means the start time will be at the very beginning of the day (midnight).</li>
-      			<li><strong>End time : </strong> maxTime (check at line number : 797 below) <br>The default "24:00:00" means the end time will be at the very end of the day (midnight).</li>
-      			<li><strong>Slot Duration : </strong> slotDuration (check at line number : 798 below) <br>The frequency for displaying time slots. <br> default: '00:30:00' (30 minutes).</li>
+      			<li><strong>Each week begins : </strong> firstDay (check the code at line number : 797 below) <br>The value must be a number that represents the day of the week.<br>Sunday=0, Monday=1, Tuesday=2, etc.</li>
+      			<li><strong>Start time of a day : </strong> minTime (check at line number : 798 below) <br>The default "00:00:00" means the start time will be at the very beginning of the day (midnight).</li>
+      			<li><strong>End time : </strong> maxTime (check at line number : 799 below) <br>The default "24:00:00" means the end time will be at the very end of the day (midnight).</li>
+      			<li><strong>Slot Duration : </strong> slotDuration (check at line number : 800 below) <br>The frequency for displaying time slots. <br> default: '00:30:00' (30 minutes).</li>
       			<li><strong>To add border on drawn events : </strong> added style .fc-event.fc-draggable, .fc-event[href] {
     cursor: pointer;
     border: 1px solid #767272 !important;
@@ -518,7 +518,8 @@
 				<li><strong>Change color of Saturday and Sunday : </strong> added style .fc td.fc-sun, .fc td.fc-sat {
     background-color: #f7f7f7 !important;
 } (check above at line number: 41)</li>
-      			<li><strong>Week selection Dropdown : </strong> Drawn dropdown (check at line number : 961 below), and used "refreshCalendarDependingUponWeeks()" function to display defined "views" (line number: 806) of fullCalendar.</li>
+      			<li><strong>Week selection Dropdown : </strong> Drawn dropdown (check at line number : 966 below), and used "refreshCalendarDependingUponWeeks()" function to display defined "views" (line number: 808) of fullCalendar.</li>
+      			<li><strong>Horizontal Slider : </strong> Drawn slider at line number : 948 below, initialized at line number: 953 and used "ResourceWidthSet()" function to increase width.<br> CSS Used: from line number: 44 to 53 on the same page</li>
       			
       		</ul>
       	</div>
@@ -790,7 +791,8 @@
     var d = date.getDate(),
         m = date.getMonth(),
         y = date.getFullYear();
-    
+    var selectedView="";
+    var resourceWidth=1;
     $('#calendar').fullCalendar({
     	firstDay : 1, //The day that each week begins.
     	minTime: "10:00:00", // start working hours 10 AM
@@ -822,6 +824,8 @@
         	}
     	},
     	viewRender:function(view, element){
+    		selectedView=view.name;
+    		
     		if(view.name=="agendaWeek" || view.name=="agendaToDisplayOneWeek"  || view.name=="agendaToDisplayTwoWeek" || view.name=="agendaToDisplayThreeWeek" || view.name=="agendaToDisplayFourWeek"){
     			if(view.name=="agendaWeek"){
     				$('#no_of_weeks').val( 1 );
@@ -830,6 +834,7 @@
     	 	}else{
     	 		$('#no_of_weeks').hide();
     	 	}
+    	 	ResourceWidthSet();
     	},
       //Random default events
       events: [
@@ -939,14 +944,13 @@
       $("#new-event").val("");
     });
     
-    //init slider
-   
-    $('<div id="weeks-range-slider" style="	position: relative;top: -30px;left: 150px;"></div>').appendTo('#calendar .fc-left')
+    //drawn horizontal slider
+   	$('<div id="weeks-range-slider" style="	position: relative;top: -30px;left: 150px;"></div>').appendTo('#calendar .fc-left')
       .on('change', function() {
       	refreshCalendarDependingUponWeeks($(this).val());
-      }).before('<span class="fc-header-space">');
+    }).before('<span class="fc-header-space">');
     
-      var resourceWidth=1;
+    //init slider
       $( "#weeks-range-slider" ).slider({
       	range: "max",
       	min: 1,
@@ -965,20 +969,27 @@
       }).before('<span class="fc-header-space">');
       
 	function ResourceWidthSet(){
+		//console.log(resourceWidth);
 		$(".fc td, .fc th").attr("style", "");
-
-		if(resourceWidth == 1){
-			$(".fc td, .fc th").attr("style", "");
+		if(resourceWidth == 4){
+			$(".fc td, .fc th").attr("style", "width: 300px;padding-left: 4px;padding-right: 4px;");
 		}else if(resourceWidth == 2){
 			$(".fc td, .fc th").attr("style", "width: 200px;padding-left: 4px;padding-right: 4px;");
 		}else if(resourceWidth == 3){
 			$(".fc td, .fc th").attr("style", "width: 250px;padding-left: 4px;padding-right: 4px;");
 		}else{
-			$(".fc td, .fc th").attr("style", "width: 300px;padding-left: 4px;padding-right: 4px;");
+			$(".fc td, .fc th").attr("style", "");
 		}	
-		$("#fullCalendar").fullCalendar('rerenderEvents');
+		
+		if(selectedView=="agendaWeek" || selectedView=="agendaToDisplayOneWeek"  || selectedView=="agendaToDisplayTwoWeek" || selectedView=="agendaToDisplayThreeWeek" || selectedView=="agendaToDisplayFourWeek"){
+			$(".fc-slats table tr:first td:last").attr("style", "");
+		}else if(selectedView=="agendaDay"){
+			$(".fc td, .fc th").attr("style", "");
+		}
+		$("#calendar").fullCalendar('rerenderEvents');
 		$(window).trigger('resize');
 	}
+	
 		function refreshCalendarDependingUponWeeks(week){
 			var weekVal=parseInt(week);
 			switch (weekVal) {
