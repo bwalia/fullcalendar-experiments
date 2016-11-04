@@ -518,10 +518,10 @@
 				<li><strong>Change color of Saturday and Sunday : </strong> added style .fc td.fc-sun, .fc td.fc-sat {
     background-color: #f7f7f7 !important;
 } (check above at line number: 41)</li>
-      			<li><strong>Week selection Dropdown : </strong> Drawn dropdown (check at line number : 966 below), and used "refreshCalendarDependingUponWeeks()" function to display defined "views" (line number: 808) of fullCalendar.</li>
+      			<li><strong>Week selection Dropdown : </strong> Drawn dropdown (check at line number : 966 below), and used "refreshCalendarPerSelWeeks()" function to display defined "views" (line number: 808) of fullCalendar.</li>
       			<li><strong>Horizontal Slider : </strong> Drawn slider at line number : 948 below, initialized at line number: 953 and used "ResourceWidthSet()" function to increase width.<br> CSS Used: from line number: 44 to 53 on the same page</li>
       			<li><strong>Change Column Format : </strong> columnFormat at line number: 801 below, where ddd means first 3 letters of day (Mon, Tue...), DD means date, dddd means full name of day, M month as number</li>
-      			<li><strong>Week selection Dropdown : </strong> Drawn dropdown (check at line number : 968 below), and used "refreshCalendarDependingUponWeeks()" function to display defined "views" (line number: 810) of fullCalendar.</li>
+      			<li><strong>Week selection Dropdown : </strong> Drawn dropdown (check at line number : 968 below), and used "refreshCalendarPerSelWeeks()" function to display defined "views" (line number: 810) of fullCalendar.</li>
       			<li><strong>Horizontal Slider : </strong> Drawn slider at line number : 950 below, initialized at line number: 955 and used "ResourceWidthSet()" function to increase width.<br> CSS Used: from line number: 44 to 53 on the same page</li>
       			<li><strong>Change Column Format : </strong> columnFormat at line number: 803 below, where ddd means first 3 letters of day (Mon, Tue...), DD means date, dddd means full name of day, M month as number</li>
       		</ul>
@@ -802,7 +802,7 @@
   		maxTime: "17:00:00", // end working hours 5 PM
   		slotDuration: '1:0:0', // slot duration to set
 		displayEventTime: false,
-  		weekends: false,
+  		weekends: true,
   		columnFormat: { month: 'ddd', week: 'ddd DD', day: 'dddd' }, //where ddd means first 3 letters of day (Mon, Tue...), DD means date, dddd means full name of day, M month as number
       	header: {
         	left: 'prev,next today',
@@ -952,7 +952,7 @@
     //drawn horizontal slider
    	$('<div id="weeks-range-slider" style="	position: relative;top: -30px;left: 150px;"></div>').appendTo('#calendar .fc-left')
       .on('change', function() {
-      	refreshCalendarDependingUponWeeks($(this).val());
+      	refreshCalendarPerSelWeeks($(this).val());
     }).before('<span class="fc-header-space">');
     
     //init slider
@@ -968,9 +968,9 @@
     });
     
     // Draw Week Selection dropdown on Calendar
-    	$('<select id="no_of_weeks" name="no_of_weeks" style="display:none; height:34px;top: -10px;position: relative;"><option value="1">1 week</option><option value="2">2 weeks</option><option value="3">3 weeks</option><option value="4">4 weeks</option></select>').appendTo('#calendar .fc-right')
+    $('<select id="no_of_weeks" name="no_of_weeks" style="display:none; height:34px;top: -10px;position: relative;"><option value="1">1 week</option><option value="2">2 weeks</option><option value="3">3 weeks</option><option value="4">4 weeks</option></select>').appendTo('#calendar .fc-right')
       .on('change', function() {
-      	refreshCalendarDependingUponWeeks($(this).val());
+      	refreshCalendarPerSelWeeks($(this).val());
       }).before('<span class="fc-header-space">');
       
 	function ResourceWidthSet(){
@@ -996,7 +996,7 @@
 		$(window).trigger('resize');
 	}
 	
-		function refreshCalendarDependingUponWeeks(week){
+		function refreshCalendarPerSelWeeks(week){
 			var weekVal=parseInt(week);
 			switch (weekVal) {
     			case 1:
