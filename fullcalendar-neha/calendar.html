@@ -493,7 +493,7 @@
             	<div id="weeks-range-slider" ></div>
             </div>-->
               <!-- THE CALENDAR -->
-              <div id="calendar"></div>
+              <div id="fullCalendar"></div>
             </div>
             <!-- /.box-body -->
           </div>
@@ -796,7 +796,7 @@
         y = date.getFullYear();
     var selectedView="";
     var resourceWidth=1;
-    $('#calendar').fullCalendar({
+    $('#fullCalendar').fullCalendar({
     	firstDay : 1, //The day that each week begins.
     	minTime: "10:00:00", // start working hours 10 AM
   		maxTime: "17:00:00", // end working hours 5 PM
@@ -906,7 +906,7 @@
 
         // render the event on the calendar
         // the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
-        $('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+        $('#fullCalendar').fullCalendar('renderEvent', copiedEventObject, true);
 
         // is the "remove after drop" checkbox checked?
         if ($('#drop-remove').is(':checked')) {
@@ -950,7 +950,7 @@
     });
     
     //drawn horizontal slider
-   	$('<div id="weeks-range-slider" style="	position: relative;top: -30px;left: 150px;"></div>').appendTo('#calendar .fc-left')
+   	$('<div id="weeks-range-slider" style="position: relative;top: -30px;left: 150px;"></div>').appendTo('#fullCalendar .fc-left')
       .on('change', function() {
       	refreshCalendarPerSelWeeks($(this).val());
     }).before('<span class="fc-header-space">');
@@ -968,7 +968,7 @@
     });
     
     // Draw Week Selection dropdown on Calendar
-    $('<select id="no_of_weeks" name="no_of_weeks" style="display:none; height:34px;top: -10px;position: relative;"><option value="1">1 week</option><option value="2">2 weeks</option><option value="3">3 weeks</option><option value="4">4 weeks</option></select>').appendTo('#calendar .fc-right')
+    $('<select id="no_of_weeks" name="no_of_weeks" style="display:none; height:34px;top: -10px;position: relative;"><option value="1">1 week</option><option value="2">2 weeks</option><option value="3">3 weeks</option><option value="4">4 weeks</option></select>').appendTo('#fullCalendar .fc-right')
       .on('change', function() {
       	refreshCalendarPerSelWeeks($(this).val());
       }).before('<span class="fc-header-space">');
@@ -991,8 +991,8 @@
 		}else if(selectedView=="agendaDay"){
 			$(".fc td, .fc th").attr("style", "");
 		}
-		$("#calendar").fullCalendar('rerenderEvents');
-		$("#calendar").fullCalendar('refresh');
+		$("#fullCalendar").fullCalendar('rerenderEvents');
+		$("#fullCalendar").fullCalendar('refresh');
 		$(window).trigger('resize');
 	}
 	
@@ -1000,16 +1000,16 @@
 			var weekVal=parseInt(week);
 			switch (weekVal) {
     			case 1:
-        			$('#calendar').fullCalendar('changeView', 'agendaToDisplayOneWeek');
+        			$('#fullCalendar').fullCalendar('changeView', 'agendaToDisplayOneWeek');
        				break;
     			case 2:
-       		 		$('#calendar').fullCalendar('changeView', 'agendaToDisplayTwoWeek');
+       		 		$('#fullCalendar').fullCalendar('changeView', 'agendaToDisplayTwoWeek');
        		 		break;
        		 	case 3:
-       		 		$('#calendar').fullCalendar('changeView', 'agendaToDisplayThreeWeek');
+       		 		$('#fullCalendar').fullCalendar('changeView', 'agendaToDisplayThreeWeek');
        		 		break;
        		 	case 4:
-       		 		$('#calendar').fullCalendar('changeView', 'agendaToDisplayFourWeek');
+       		 		$('#fullCalendar').fullCalendar('changeView', 'agendaToDisplayFourWeek');
        		 		break;
 			} 
 		}
