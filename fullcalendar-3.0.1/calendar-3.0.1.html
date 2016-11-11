@@ -1,47 +1,20 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset='utf-8' />
-<link href='fullcalendar.css' rel='stylesheet' />
-<link href='fullcalendar.print.css' rel='stylesheet' media='print' />
-<script src='lib/moment.min.js'></script>
-<script src='lib/jquery.min.js'></script>
-<script src='fullcalendar.min.js'></script>
-<script>var selectedViewNameStr="";
-
-	$(document).ready(function() {
-		var startTimeStr = "09:00:00";
-		var endTimeStr = "18:00:00";
-		
-		var slotDurationFormatVal='00:30:00';
-		var startTimeStr = "09:00:00";
-		var endTimeStr = "18:00:00";
-		
-		
-		$('#calendar').fullCalendar({
-			header: {
-				left: 'prev,next today',
-				center: 'title',
-				right: 'month,agendaWeek,basicDay'
-			},
-			defaultDate: '2016-09-12',
-			navLinks: true, // can click day/week names to navigate views
-			editable: true,
-			eventLimit: true, // allow "more" link when too many events
-			defaultView: 'agendaWeek',
-      	views: {
-      		agendaWeek : {
-      			slotDuration: '00:60:00', 
-           	 	minTime: startTimeStr, // start working hours 10 AM
-  				maxTime: endTimeStr, // end working hours 7 PM
-      		}, 
-			display1WeeksAsDays: {
-                type: 'agenda',
-                minTime: startTimeStr, // start working hours 10 AM
-  				maxTime: endTimeStr, // end working hours 7 PM
-				slotDuration: slotDurationFormatVal, // slots per day? 12:00 i.e. 12 hours AM/PM
-				duration: { days: 7 } // to draw as days, we will use
-        	},
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8' />
+<link href='fullcalendar.css' rel='stylesheet' />
+<link href='fullcalendar.print.css' rel='stylesheet' media='print' />
+<script src='lib/moment.min.js'></script>
+<script src='lib/jquery.min.js'></script>
+<script src='fullcalendar.min.js'></script>
+<script>var selectedViewNameStr="";	$(document).ready(function() {		var startTimeStr = "09:00:00";		var endTimeStr = "18:00:00";		var slotDurationFormatVal='00:30:00';		var startTimeStr = "09:00:00";		var endTimeStr = "18:00:00";		$('#calendar').fullCalendar({			header: {				left: 'prev,next today',				center: 'title',				right: 'month,agendaWeek,basicDay'			},
+			defaultDate: '2016-09-12',
+			navLinks: true, // can click day/week names to navigate views
+			editable: true,
+			eventLimit: true, // allow "more" link when too many events
+			defaultView: 'agendaWeek',
+      		views: {				agendaWeek : {					slotDuration: '00:60:00', 					minTime: startTimeStr, // start working hours 10 AM					maxTime: endTimeStr, // end working hours 7 PM				}, 		
+				display1WeeksAsDays: {					type: 'agenda',					minTime: startTimeStr, // start working hours 10 AM					maxTime: endTimeStr, // end working hours 7 PM					slotDuration: slotDurationFormatVal, // slots per day? 12:00 i.e. 12 hours AM/PM					duration: { days: 7 } // to draw as days, we will use				},
         	display2WeeksAsDays: {
                 type: 'agenda',
                 minTime: startTimeStr, // start working hours 10 AM
@@ -99,34 +72,8 @@
 			},
 			viewRender:function(view, element){
     		selectedView=view.name;
-    		//console.log(selectedView);
-    		if(view.name=="agendaWeek" || view.name=="basicDay"){
-                selectedViewNameStr=selectedView;
-            }
-            
-    	 	$('.fc-scope').hide();
-            $('.fc-basicDay-button').removeClass( 'fc-state-active' );
-            $('.fc-agendaWeek-button').removeClass( 'fc-state-active' );
-            
-    		if(view.name=="agendaWeek" || view.name=="agendaToDisplayOneWeek" || view.name=="agendaToDisplayTwoWeek" || view.name=="agendaToDisplayThreeWeek" ||   view.name=="agendaToDisplayFourWeek"){
-    			if(view.name=="agendaWeek"){
-                    var weekSelectedNum=$('#no_of_weeks').val();
-                    refreshCalendarDependingUponWeeks(weekSelectedNum);
-                }
-                $('.fc-scope').show();
-                $('.fc-agendaWeek-button').addClass( 'fc-state-active' );
-                
-    		}else if(view.name=="basicDay" || view.name=="display4WeeksAsDays" ||   view.name=="display3WeeksAsDays" || view.name=="display2WeeksAsDays" || view.name=="display1WeeksAsDays"){
-                if(view.name=="basicDay"){
-                    var weekSelectedNum=$('#no_of_weeks').val();
-                    refreshCalendarDependingUponWeeks(weekSelectedNum);
-                }
-                $('.fc-scope').show();
-    			$('.fc-basicDay-button').addClass( 'fc-state-active' );
-    		}
-    		
-    	 	//ResourceWidthSet();
-    	},
+    		if(view.name=="agendaWeek" || view.name=="basicDay"){				$('#no_of_weeks').val('')
+                selectedViewNameStr=selectedView;			}			$('.fc-scope').hide();			$('.fc-basicDay-button').removeClass( 'fc-state-active' );			$('.fc-agendaWeek-button').removeClass( 'fc-state-active' );						if(view.name=="agendaWeek" || view.name=="agendaToDisplayOneWeek" || view.name=="agendaToDisplayTwoWeek" || view.name=="agendaToDisplayThreeWeek" ||   view.name=="agendaToDisplayFourWeek"){				if(view.name=="agendaWeek"){					$('#no_of_weeks').val(1);				}				$('.fc-scope').show();				$('.fc-agendaWeek-button').addClass( 'fc-state-active' );			}else if(view.name=="basicDay" || view.name=="display4WeeksAsDays" ||   view.name=="display3WeeksAsDays" || view.name=="display2WeeksAsDays" || view.name=="display1WeeksAsDays"){				$('.fc-scope').show();				$('.fc-basicDay-button').addClass( 'fc-state-active' );			}		},
 			events: [
 				{
 					title: 'All Day Event',
@@ -188,7 +135,7 @@
 			}
 		});
 		// Draw Week Selection dropdown on Calendar
-    	$('<select id="no_of_weeks" name="no_of_weeks" class="fc-scope" style="	height:34px;position: relative;"><option value="1">1 week</option><option value="2">2 weeks</option><option value="3">3 weeks</option><option value="4">4 weeks</option></select>').appendTo('#calendar .fc-right')
+    	$('<select id="no_of_weeks" name="no_of_weeks" class="fc-scope" style="	height:34px;position: relative;"><option value="">--Select--</option><option value="1">1 week</option><option value="2">2 weeks</option><option value="3">3 weeks</option><option value="4">4 weeks</option></select>').appendTo('#calendar .fc-right')
       .on('change', function() {
       	refreshCalendarDependingUponWeeks($(this).val());
       }).before('<span class="fc-header-space">');
@@ -231,10 +178,9 @@ function refreshCalendarDependingUponWeeks(week){
             }else{
                 $('#calendar').fullCalendar('changeView', 'agendaToDisplayFiveWeek');
             }
-       		break;
-            
-    } 
-}
+       		break;
+    } 
+}
 </script>
 <style>
 
@@ -250,11 +196,9 @@ function refreshCalendarDependingUponWeeks(week){
 		margin: 0 auto;
 	}
 
-</style>
-</head>
-<body>
-
-	<div id='calendar'></div>
-
-</body>
+</style>
+</head>
+<body>
+	<div id='calendar'></div>
+</body>
 </html>
